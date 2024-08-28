@@ -5,9 +5,9 @@ import (
 )
 
 type UserHandler struct {
-	userUsecase user.UserUseCase
+	userUsecase user.UserUseCaseInterface
 }
 
-func NewUserHandler(userUsecase user.UserUseCase) *UserHandler {
+func NewUserHandler(userUsecase user.UserUseCaseInterface) *UserHandler {
 	return &UserHandler{userUsecase: userUsecase}
 }

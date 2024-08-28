@@ -1,14 +1,16 @@
 package usecase
 
-import "github.com/gofiber/fiber/v2"
+import (
+	repo "github.com/vkhoa145/facebook-mini-api/app/modules/users/repository"
+)
 
-type userUseCaseInterface interface {
-	SignIn(ctx *fiber.Ctx) error
+type UserUseCaseInterface interface {
 }
 
 type UserUseCase struct {
+	userRepo repo.UserRepoInterface
 }
 
-func NewUserUseCase() *UserUseCase {
-	return &UserUseCase{}
+func NewUserUseCase(userRepo repo.UserRepoInterface) UserUseCaseInterface {
+	return &UserUseCase{userRepo: userRepo}
 }
