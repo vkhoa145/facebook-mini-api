@@ -15,7 +15,6 @@ type User struct {
 	Password string `gorm:"type:varchar(255)" json:"password"`
 	Birthday string `gorm:"type:varchar(255)" json:birthday`
 	Phone    string `gorm:"type:varchar(255)" json:phone`
-	Age      int64  `gorm:"type:int64" json:age`
 }
 
 func (User) TableName() string {
