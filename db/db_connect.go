@@ -31,9 +31,10 @@ func NewDb(cfg *config.Config) *gorm.DB {
 
 	db.AutoMigrate(
 		&models.User{},
+		&models.SchemaMigration{},
 	)
 
-	initSchema(db)
+	initSchemaMigration(db)
 	runMigration(db)
 
 	if err != nil {
@@ -78,7 +79,7 @@ func createDatabaseIfNotExists(cfg *config.Config) error {
 	return nil
 }
 
-func initSchema(db *gorm.DB) {
+func initSchemaMigration(db *gorm.DB) {
 	sqlFile, err := os.ReadFile(filepath.Join("sql", "schema_migration.sql"))
 	if err != nil {
 		log.Fatal("Failed to read SQL file:", err)
@@ -117,8 +118,9 @@ func runMigration(db *gorm.DB) {
 				log.Fatal("Failed to execute SQL migration:", err)
 			}
 
-			if err := db.Exec("INSERT INTO schema_migrations (version) VALUES (?)", version).Error; err != nil {
-				log.Fatal("Failed to insert migration version into schema_migrations table:", err)
+			schema_version := &models.SchemaMigration{Version: version}
+			if err := db.Table(models.SchemaMigration{}.TableName()).Create(schema_version).Error; err != nil {
+				log.Fatal("Failed to insert migration version into schema_migrations table")
 			}
 		}
 	}
