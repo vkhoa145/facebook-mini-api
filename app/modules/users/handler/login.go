@@ -13,9 +13,14 @@ func (h *UserHandler) Login() fiber.Handler {
 			return c.JSON(&fiber.Map{"status": 400, "message": err.Error()})
 		}
 
-		if c.Params("name") == "" {
-			return c.JSON(&fiber.Map{"status": "400", "message": "field name is blank"})
+		createdUser, err := h.userUsecase.SignUp(payload)
+
+		if err != nil {
+			c.Status(400)
+			return c.JSON(&fiber.Map{"status": 400, "error": err.Error()})
 		}
-		return c.JSON(&fiber.Map{"status": "oke"})
+
+		c.Status(200)
+		return c.JSON(&fiber.Map{"status": 200, "data": createdUser})
 	}
 }

@@ -1,10 +1,12 @@
 package usecase
 
 import (
+	"github.com/vkhoa145/facebook-mini-api/app/models"
 	repo "github.com/vkhoa145/facebook-mini-api/app/modules/users/repository"
 )
 
 type UserUseCaseInterface interface {
+	SignUp(payload models.SignUpInput) (*models.UserResponse, error)
 }
 
 type UserUseCase struct {
