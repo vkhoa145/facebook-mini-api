@@ -1,0 +1,5 @@
+en:
+  error_validations:
+    required: "This field is required."
+    email: "Invalid email format."
+    min: "Minimum length is {min}."
