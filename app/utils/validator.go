@@ -12,17 +12,19 @@ func ValidateParams(payload interface{}) map[string][]string {
 	errors := make(map[string][]string)
 
 	for _, err := range errorParams.(validator.ValidationErrors) {
-		arg := generateArgumentForLocale()
-		message := Locale(fmt.Sprintf("en.error_validations.%s", err.Tag()), arg)
+		arg := generateArgumentForLocale(err.Param())
+		message := Locale(fmt.Sprintf("en.go_validators.%s", err.Tag()), arg)
 		errors[err.Field()] = append(errors[err.Field()], message)
 	}
 
 	return errors
 }
 
-func generateArgumentForLocale() map[string]string {
+func generateArgumentForLocale(err string) map[string]string {
 	arg := map[string]string{
-		"min": "10",
+		"min": err,
+		"gt":  err,
+		"lte": err,
 	}
 
 	return arg

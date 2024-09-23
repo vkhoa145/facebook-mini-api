@@ -10,9 +10,9 @@ const TableNameUsers = "users"
 
 type User struct {
 	gorm.Model
-	Name     string `gorm:"type:varchar(255)" json:"name"`
-	Email    string `gorm:"type:varchar(255)" json:"email"`
-	Password string `gorm:"type:varchar(255)" json:"password"`
+	Name     string `gorm:"type:varchar(255)" json:"name" validate:"required,min=3,max=255"`
+	Email    string `gorm:"type:varchar(255)" json:"email" validate:"required,email,min=5,max=255"`
+	Password string `gorm:"type:varchar(255)" json:"password" validate:"required"`
 	Birthday string `gorm:"type:varchar(255)" json:birthday`
 	Phone    string `gorm:"type:varchar(255)" json:phone`
 }
@@ -33,8 +33,9 @@ type UserResponse struct {
 
 type SignUpInput struct {
 	Name       string `json:"name" validate:"required,min=3,max=255"`
-	Email      string `json:"email" validate:"required,email"`
-	BirthDay   int64  `json:"birth_day" validate:"required"`
-	BirthMonth int64  `json:"birth_month" validate:"required"`
-	BirthYear  int64  `json:"birth_year" validate:"required"`
+	Email      string `json:"email" validate:"required,email,min=5,max=255"`
+	BirthDay   int64  `json:"birth_day" validate:"gt=0"`
+	BirthMonth int64  `json:"birth_month" validate:"gt=0,lte=12"`
+	BirthYear  int64  `json:"birth_year" validate:"gt=1900"`
+	Password   string `json:"password" validate:"required"`
 }

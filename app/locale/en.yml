@@ -1,5 +1,7 @@
 en:
-  error_validations:
+  go_validators:
     required: "This field is required."
     email: "Invalid email format."
     min: "Minimum length is {min}."
+    gt: "Must larger than {gt}."
+    lte: "Must smaller than {lte}"
