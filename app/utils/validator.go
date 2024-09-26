@@ -11,6 +11,10 @@ func ValidateParams(payload interface{}) map[string][]string {
 	errorParams := validate.Struct(payload)
 	errors := make(map[string][]string)
 
+	if errorParams == nil {
+		return nil
+	}
+
 	for _, err := range errorParams.(validator.ValidationErrors) {
 		arg := generateArgumentForLocale(err.Param())
 		message := Locale(fmt.Sprintf("en.go_validators.%s", err.Tag()), arg)

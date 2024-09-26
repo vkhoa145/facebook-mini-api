@@ -7,7 +7,7 @@ import (
 
 type UserRepoInterface interface {
 	CheckExistedEmail(email string) bool
-	CreateUser(payload *models.SignUpInput) (*models.User, error)
+	CreateUser(payload *models.User) (*models.User, error)
 }
 
 type UserRepo struct {

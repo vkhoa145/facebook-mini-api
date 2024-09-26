@@ -6,14 +6,14 @@ import (
 	"github.com/vkhoa145/facebook-mini-api/app/models"
 )
 
-func (u UserUseCase) SignUp(payload models.SignUpInput) (*models.UserResponse, error) {
-	email := payload.Email
+func (u UserUseCase) SignUp(user *models.User) (*models.UserResponse, error) {
+	email := user.Email
 	existingEmail := u.userRepo.CheckExistedEmail(email)
 	if existingEmail {
 		return nil, errors.New("email is existing")
 	}
 
-	createdUser, err := u.userRepo.CreateUser(&payload)
+	createdUser, err := u.userRepo.CreateUser(user)
 	if err != nil {
 		return nil, err
 	}
@@ -27,5 +27,6 @@ func makeUserResponse(user *models.User) *models.UserResponse {
 		ID:       user.ID,
 		Email:    user.Email,
 		Birthday: user.Birthday,
+		Name: user.Name,
 	}
 }
