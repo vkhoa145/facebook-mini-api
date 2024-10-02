@@ -30,6 +30,7 @@ func generateArgumentForLocale(err string) map[string]string {
 		"gt":     err,
 		"lte":    err,
 		"unique": err,
+		"day":    err,
 	}
 
 	return arg

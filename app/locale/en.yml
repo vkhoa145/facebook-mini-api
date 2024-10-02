@@ -6,3 +6,4 @@ en:
     gt: "Must larger than {gt}."
     lte: "Must smaller than {lte}"
     unique: "{unique} is existing"
+    day: "invalid day"
