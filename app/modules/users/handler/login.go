@@ -32,17 +32,14 @@ func (h *UserHandler) Login() fiber.Handler {
 }
 
 func modifyUserParams(payload *models.SignUpInput) *models.User {
-	BirthDay := fmt.Sprintf("%d/%d/%d", payload.BirthDay, payload.BirthMonth, payload.BirthYear)
 	hashPassword := utils.HashPassword(payload.Password)
-	fmt.Println("password:", hashPassword)
-	fmt.Println("BirthDay:", BirthDay)
-	fmt.Println("BirthDay:", payload.BirthDay)
-	fmt.Println("BirthMonth:", payload.BirthMonth)
-	fmt.Println("BirthYear:", payload.BirthYear)
+	birthday := utils.ModifyBirthday(int(payload.BirthDay), int(payload.BirthMonth), int(payload.BirthYear))
+
+	fmt.Println("birth day:", birthday)
 	user := &models.User{
 		Email:    payload.Email,
 		Name:     payload.Name,
-		Birthday: BirthDay,
+		Birthday: birthday,
 		Password: hashPassword,
 	}
 

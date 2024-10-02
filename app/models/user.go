@@ -33,7 +33,7 @@ type UserResponse struct {
 
 type SignUpInput struct {
 	Name       string `json:"name" validate:"required,min=3,max=255"`
-	Email      string `json:"email" validate:"required,email,min=5,max=255"`
+	Email      string `json:"email" validate:"required,email,unique,min=5,max=255"`
 	BirthDay   int64  `json:"birth_day" validate:"gt=0"`
 	BirthMonth int64  `json:"birth_month" validate:"gt=0,lte=12"`
 	BirthYear  int64  `json:"birth_year" validate:"gt=1900"`

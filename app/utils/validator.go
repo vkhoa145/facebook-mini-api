@@ -26,9 +26,10 @@ func ValidateParams(payload interface{}) map[string][]string {
 
 func generateArgumentForLocale(err string) map[string]string {
 	arg := map[string]string{
-		"min": err,
-		"gt":  err,
-		"lte": err,
+		"min":    err,
+		"gt":     err,
+		"lte":    err,
+		"unique": err,
 	}
 
 	return arg
