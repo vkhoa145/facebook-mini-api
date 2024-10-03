@@ -15,7 +15,11 @@ func (h *UserHandler) Login() fiber.Handler {
 			return utils.DataResponseResult(nil, err.Error(), 400, ctx)
 		}
 
-		if errorFields := utils.ValidateParams(payload); errorFields != nil {
+		// if errorFields := utils.ValidateParams(payload); errorFields != nil {
+		// 	return utils.DataResponseResult(nil, errorFields, 400, ctx)
+		// }
+
+		if errorFields := validateSignInParams(payload); errorFields != nil {
 			return utils.DataResponseResult(nil, errorFields, 400, ctx)
 		}
 
@@ -45,27 +49,30 @@ func modifyUserParams(payload *models.SignUpInput) *models.User {
 	return user
 }
 
-func validateSignInParams(payload interface{}) map[string][]string {
-	errors := make(map[string][]string)
+func validateSignInParams(payload models.SignUpInput) map[string]string {
+	errors := make(map[string]string)
 	if errorFields := utils.ValidateParams(payload); errorFields != nil {
 		errors = handleErrorsMap(errorFields)
 	}
 
-
-
-	return errors
-}
-
-func handleErrorsMap(errorsMap map[string][]string) map[string][]string {
-	errors := make(map[string][]string)
-	for key, errorValue := range errorsMap {
-		errors[key] = append(errors[key], errorValue...)
+	if !utils.IsValidDay(int(payload.BirthDay), int(payload.BirthMonth), int(payload.BirthYear)) {
+		errors["BirthDay"] = "Invalid BirthDay"
 	}
 
 	return errors
 }
 
-func validBirtday(payload *models.SignUpInput) map[string][]string {
-	
-	return nil
+func handleErrorsMap(errorsMap map[string]string) map[string]string {
+	errors := make(map[string]string)
+	for key, errorValue := range errorsMap {
+		errors[key] = errorValue
+	}
+
+	return errors
 }
+
+// func validBirtday(payload *models.SignUpInput, errors map[string]string) map[string][]string {
+// 	day := payload.BirthDay
+
+// 	return nil
+// }
