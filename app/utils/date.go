@@ -39,6 +39,8 @@ func IsValidDay(day int, month int, year int) bool {
 		return false
 	}
 
+	getLastDayOfMonth(int64(month))
+
 	if month <= 7 && day > 30 {
 		return false
 	}
@@ -52,4 +54,13 @@ func IsValidDay(day int, month int, year int) bool {
 
 func IsLeapYear(year int) bool {
 	return year%4 == 0
+}
+
+func getLastDayOfMonth(month int64) int64 {
+	monthWith30days := [4]int64{4, 6, 9, 11}
+	// monthWith31days := []int64{1, 3, 5, 7, 8, 12}
+
+	IsInsideArray(10, monthWith30days)
+
+	return 30
 }

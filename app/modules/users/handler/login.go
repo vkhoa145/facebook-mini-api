@@ -15,9 +15,6 @@ func (h *UserHandler) Login() fiber.Handler {
 			return utils.DataResponseResult(nil, err.Error(), 400, ctx)
 		}
 
-		// if errorFields := utils.ValidateParams(payload); errorFields != nil {
-		// 	return utils.DataResponseResult(nil, errorFields, 400, ctx)
-		// }
 
 		if errorFields := validateSignInParams(payload); errorFields != nil {
 			return utils.DataResponseResult(nil, errorFields, 400, ctx)
@@ -56,7 +53,7 @@ func validateSignInParams(payload models.SignUpInput) map[string]string {
 	}
 
 	if !utils.IsValidDay(int(payload.BirthDay), int(payload.BirthMonth), int(payload.BirthYear)) {
-		errors["BirthDay"] = "Invalid BirthDay"
+		errors["BirthDay"] = utils.Locale("en.common_errors.invalid_day")
 	}
 
 	return errors
@@ -70,9 +67,3 @@ func handleErrorsMap(errorsMap map[string]string) map[string]string {
 
 	return errors
 }
-
-// func validBirtday(payload *models.SignUpInput, errors map[string]string) map[string][]string {
-// 	day := payload.BirthDay
-
-// 	return nil
-// }

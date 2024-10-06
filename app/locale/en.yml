@@ -7,3 +7,5 @@ en:
     lte: "Must smaller than {lte}"
     unique: "{unique} is existing"
     day: "invalid day"
+  common_errors:
+    invalid_day: 'Invalid Day'
