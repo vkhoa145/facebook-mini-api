@@ -1,11 +1,11 @@
 package utils
 
 import (
-	"fmt"
 	"reflect"
 )
 
 func IsInsideArray(value interface{}, array interface{}) bool {
+	// REFACTOR: Need to apply another algorthm for searching
 	if value == nil {
 		panic("Value must existed")
 	}
@@ -14,7 +14,7 @@ func IsInsideArray(value interface{}, array interface{}) bool {
 		panic("Array must existed")
 	}
 
-	if !IsArray(array) || !IsSlice(array) {
+	if !isValidArrayOrSlice(array) {
 		panic("Argument #2 must be an Array or Slice")
 	}
 
@@ -22,32 +22,36 @@ func IsInsideArray(value interface{}, array interface{}) bool {
 	val := reflect.ValueOf(array)
 	for i := 0; i < val.Len(); i++ {
 		ele := val.Index(i)
-		targetSlice[i] = ele
+		targetSlice = append(targetSlice, ele.Interface())
 	}
 
-	fmt.Println("new array:", targetSlice)
+	for _, ele := range targetSlice {
+		if ele == value {
+			return true
+		}
+	}
 
-	return true
+	return false
 }
 
-// func isValidArrayOrSlice(array interface{}) bool {
-// 	isValid := true
-// 	switch isValid {
-// 		case
-// 	}
+func isValidArrayOrSlice(array interface{}) bool {
+	if IsArray(array) {
+		return true
+	}
 
-// 	return isValid
-// }
+	if IsSlice(array) {
+		return true
+	}
+
+	return false
+}
 
 func IsSlice(slice interface{}) bool {
 	v := reflect.TypeOf(slice)
-	fmt.Println("reflect value:", reflect.ValueOf(slice))
 	return v.Kind() != reflect.Slice
 }
 
 func IsArray(array interface{}) bool {
 	v := reflect.TypeOf(array)
-	fmt.Println("reflect value:", reflect.ValueOf(array))
-
 	return v.Kind() != reflect.Array
 }

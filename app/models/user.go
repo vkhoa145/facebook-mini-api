@@ -1,8 +1,6 @@
 package models
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
@@ -22,13 +20,12 @@ func (User) TableName() string {
 }
 
 type UserResponse struct {
-	ID        uint      `json:"id,omitemtpty"`
-	Name      string    `json:"name,omitemtpty"`
-	Email     string    `json:"email,omitemtpty"`
-	Birthday  string    `json:"birthday,omitemtpty"`
-	Phone     string    `json:"phone,omitemtpty"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID       uint   `json:"id"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Birthday string `json:"birthday"`
+	AccessToken string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 type SignUpInput struct {

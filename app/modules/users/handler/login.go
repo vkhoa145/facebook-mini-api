@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/vkhoa145/facebook-mini-api/app/models"
 	utils "github.com/vkhoa145/facebook-mini-api/app/utils"
@@ -14,7 +12,6 @@ func (h *UserHandler) Login() fiber.Handler {
 		if err := ctx.BodyParser(&payload); err != nil {
 			return utils.DataResponseResult(nil, err.Error(), 400, ctx)
 		}
-
 
 		if errorFields := validateSignInParams(payload); errorFields != nil {
 			return utils.DataResponseResult(nil, errorFields, 400, ctx)
@@ -34,8 +31,6 @@ func (h *UserHandler) Login() fiber.Handler {
 func modifyUserParams(payload *models.SignUpInput) *models.User {
 	hashPassword := utils.HashPassword(payload.Password)
 	birthday := utils.ModifyBirthday(int(payload.BirthDay), int(payload.BirthMonth), int(payload.BirthYear))
-
-	fmt.Println("birth day:", birthday)
 	user := &models.User{
 		Email:    payload.Email,
 		Name:     payload.Name,
@@ -54,6 +49,15 @@ func validateSignInParams(payload models.SignUpInput) map[string]string {
 
 	if !utils.IsValidDay(int(payload.BirthDay), int(payload.BirthMonth), int(payload.BirthYear)) {
 		errors["BirthDay"] = utils.Locale("en.common_errors.invalid_day")
+	}
+
+	var errorKeys []string
+	for key := range errors {
+		errorKeys = append(errorKeys, key)
+	}
+
+	if len(errorKeys) == 0 {
+		return nil
 	}
 
 	return errors
