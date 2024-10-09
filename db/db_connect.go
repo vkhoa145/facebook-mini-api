@@ -32,6 +32,7 @@ func NewDb(cfg *config.Config) *gorm.DB {
 	db.AutoMigrate(
 		&models.User{},
 		&models.SchemaMigration{},
+		&models.LoginToken{},
 	)
 
 	initSchemaMigration(db)

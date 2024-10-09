@@ -1,6 +1,15 @@
 package models
 
+import "gorm.io/gorm"
+
+const TableNameLoginTokens = "login_tokens"
+
 type LoginToken struct {
-	UserId uint
+	gorm.Model
+	UserId       uint
 	RefreshToken string
+}
+
+func (LoginToken) TableName() string {
+	return TableNameLoginTokens
 }

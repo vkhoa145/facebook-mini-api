@@ -24,7 +24,12 @@ func (u UserUseCase) SignUp(user *models.User) (*models.UserResponse, error) {
 		return nil, errJwt
 	}
 
-	userResponse := makeUserResponse(createdUser, jwt)
+	createdLoginToken, errLoginToken := u.userRepo.CreateLoginToken(jwt)
+	if errLoginToken != nil {
+		return nil, errLoginToken
+	}
+
+	userResponse := makeUserResponse(createdUser, createdLoginToken)
 	return userResponse, nil
 }
 

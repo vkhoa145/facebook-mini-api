@@ -8,6 +8,7 @@ import (
 type UserRepoInterface interface {
 	CheckExistedEmail(email string) bool
 	CreateUser(payload *models.User) (*models.User, error)
+	CreateLoginToken(jwt *models.JwtResponse) (*models.JwtResponse, error)
 }
 
 type UserRepo struct {
