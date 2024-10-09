@@ -8,3 +8,8 @@ type Claims struct {
 	UserId int
 	jwt.StandardClaims
 }
+
+type JwtResponse struct {
+	AccessToken string
+	RefreshToken string
+}

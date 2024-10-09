@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/vkhoa145/facebook-mini-api/app/models"
 	"github.com/vkhoa145/facebook-mini-api/app/utils"
@@ -20,18 +19,22 @@ func (u UserUseCase) SignUp(user *models.User) (*models.UserResponse, error) {
 		return nil, err
 	}
 
-	jwt := utils.GenerateJwtToken(createdUser)
+	jwt, errJwt := utils.GenerateAccessTokenAndRefreshToken(createdUser)
+	if errJwt != nil {
+		return nil, errJwt
+	}
+
 	userResponse := makeUserResponse(createdUser, jwt)
-	fmt.Println("user response", userResponse)
 	return userResponse, nil
 }
 
-func makeUserResponse(user *models.User, jwt string) *models.UserResponse {
+func makeUserResponse(user *models.User, jwt *models.JwtResponse) *models.UserResponse {
 	return &models.UserResponse{
-		ID:          user.ID,
-		Email:       user.Email,
-		Birthday:    user.Birthday,
-		Name:        user.Name,
-		AccessToken: jwt,
+		ID:           user.ID,
+		Email:        user.Email,
+		Birthday:     user.Birthday,
+		Name:         user.Name,
+		AccessToken:  jwt.AccessToken,
+		RefreshToken: jwt.RefreshToken,
 	}
 }
