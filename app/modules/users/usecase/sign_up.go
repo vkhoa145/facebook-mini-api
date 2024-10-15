@@ -14,8 +14,10 @@ func (u UserUseCase) SignUp(user *models.User) (*models.UserResponse, error) {
 		return nil, errors.New("email is existing")
 	}
 
-	createdUser, err := u.userRepo.CreateUser(user)
+	tx := u.tx.Begin()
+	createdUser, err := u.userRepo.CreateUser(user, tx)
 	if err != nil {
+		tx.Rollback()
 		return nil, err
 	}
 
@@ -24,11 +26,13 @@ func (u UserUseCase) SignUp(user *models.User) (*models.UserResponse, error) {
 		return nil, errJwt
 	}
 
-	createdLoginToken, errLoginToken := u.userRepo.CreateLoginToken(jwt)
+	createdLoginToken, errLoginToken := u.userRepo.CreateLoginToken(jwt, tx)
 	if errLoginToken != nil {
+		tx.Rollback()
 		return nil, errLoginToken
 	}
 
+	tx.Commit()
 	userResponse := makeUserResponse(createdUser, createdLoginToken)
 	return userResponse, nil
 }

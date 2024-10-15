@@ -1,22 +1,25 @@
 package transaction
 
-import "database/sql"
+import "gorm.io/gorm"
 
 type TransactionManager struct {
-	DB *sql.DB
+	Tx *gorm.DB
 }
 
-type SqlTransaction struct {
-	Tx *sql.Tx
-}
-
-func (tm TransactionManager) NewTransaction() (*SqlTransaction, error) {
-	tx, err := tm.DB.Begin()
-	if err != nil {
-		return nil, err
+func NewTransactionManager(db *gorm.DB) *TransactionManager {
+	return &TransactionManager{
+		Tx: db,
 	}
+}
 
-	return &SqlTransaction{
-		Tx: tx,
-	}, nil
+func (t TransactionManager) Begin() *gorm.DB {
+	return t.Tx.Begin()
+}
+
+func (t TransactionManager) Commit() *gorm.DB {
+	return t.Tx.Commit()
+}
+
+func (t TransactionManager) Rollback() *gorm.DB {
+	return t.Tx.Rollback()
 }
