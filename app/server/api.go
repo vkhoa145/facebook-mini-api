@@ -9,7 +9,7 @@ import (
 
 func SetupRoutes(server *Server) {
 	transactionManager := transaction.NewTransactionManager(server.DB)
-	userRepo := userRepo.NewUserRepo(server.DB, server.DB.Begin())
+	userRepo := userRepo.NewUserRepo(server.DB)
 	userUsecase := userUsecase.NewUserUseCase(userRepo, *transactionManager)
 	userHandler := userHandler.NewUserHandler(userUsecase)
 

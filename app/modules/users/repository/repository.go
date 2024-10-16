@@ -13,12 +13,10 @@ type UserRepoInterface interface {
 
 type UserRepo struct {
 	DB *gorm.DB
-	Tx *gorm.DB
 }
 
-func NewUserRepo(db *gorm.DB, tx *gorm.DB) *UserRepo {
+func NewUserRepo(db *gorm.DB) *UserRepo {
 	return &UserRepo{
 		DB: db,
-		Tx: tx,
 	}
 }
