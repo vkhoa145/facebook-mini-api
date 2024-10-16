@@ -8,11 +8,12 @@ const TableNameUsers = "users"
 
 type User struct {
 	gorm.Model
-	Name     string `gorm:"type:varchar(255)" json:"name" validate:"required,min=3,max=255"`
-	Email    string `gorm:"type:varchar(255)" json:"email" validate:"required,email,min=5,max=255"`
-	Password string `gorm:"type:varchar(255)" json:"password" validate:"required"`
-	Birthday string `gorm:"type:varchar(255)" json:birthday`
-	Phone    string `gorm:"type:varchar(255)" json:phone`
+	Name       string     `gorm:"type:varchar(255)" json:"name" validate:"required,min=3,max=255"`
+	Email      string     `gorm:"unique;type:varchar(255);not null" json:"email" validate:"required,email,min=5,max=255"`
+	Password   string     `gorm:"type:varchar(255);not null" json:"password" validate:"required"`
+	Birthday   string     `gorm:"type:varchar(255);not null" json:birthday`
+	Phone      string     `gorm:"type:varchar(255)" json:phone`
+	LoginToken LoginToken `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
 }
 
 func (User) TableName() string {
@@ -20,11 +21,11 @@ func (User) TableName() string {
 }
 
 type UserResponse struct {
-	ID       uint   `json:"id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Birthday string `json:"birthday"`
-	AccessToken string `json:"access_token"`
+	ID           uint   `json:"id"`
+	Name         string `json:"name"`
+	Email        string `json:"email"`
+	Birthday     string `json:"birthday"`
+	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 }
 

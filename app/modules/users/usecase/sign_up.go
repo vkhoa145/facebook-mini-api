@@ -26,7 +26,7 @@ func (u UserUseCase) SignUp(user *models.User) (*models.UserResponse, error) {
 		return nil, errJwt
 	}
 
-	createdLoginToken, errLoginToken := u.userRepo.CreateLoginToken(jwt, tx)
+	createdLoginToken, errLoginToken := u.userRepo.CreateLoginToken(jwt, createdUser.ID, tx)
 	if errLoginToken != nil {
 		tx.Rollback()
 		return nil, errLoginToken

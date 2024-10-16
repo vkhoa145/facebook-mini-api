@@ -8,7 +8,7 @@ import (
 type UserRepoInterface interface {
 	CheckExistedEmail(email string) bool
 	CreateUser(payload *models.User, tx *gorm.DB) (*models.User, error)
-	CreateLoginToken(jwt *models.JwtResponse, tx *gorm.DB) (*models.JwtResponse, error)
+	CreateLoginToken(jwt *models.JwtResponse, UserID uint, tx *gorm.DB) (*models.JwtResponse, error)
 }
 
 type UserRepo struct {

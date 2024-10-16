@@ -5,8 +5,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func (r UserRepo) CreateLoginToken(jwt *models.JwtResponse, tx *gorm.DB) (*models.JwtResponse, error) {
-	LoginToken := &models.LoginToken{}
+func (r UserRepo) CreateLoginToken(jwt *models.JwtResponse, UserID uint, tx *gorm.DB) (*models.JwtResponse, error) {
+	LoginToken := &models.LoginToken{
+		RefreshToken: jwt.RefreshToken,
+	}
 
 	createRefreshToken := tx.Table(models.LoginToken{}.TableName()).Create(LoginToken)
 	if createRefreshToken.Error != nil {
