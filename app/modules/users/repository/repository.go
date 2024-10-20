@@ -2,6 +2,7 @@ package repository
 
 import (
 	"github.com/vkhoa145/facebook-mini-api/app/models"
+	"github.com/vkhoa145/facebook-mini-api/app/queries"
 	"gorm.io/gorm"
 )
 
@@ -12,11 +13,13 @@ type UserRepoInterface interface {
 }
 
 type UserRepo struct {
-	DB *gorm.DB
+	DB      *gorm.DB
+	Queries *queries.Queries
 }
 
-func NewUserRepo(db *gorm.DB) *UserRepo {
+func NewUserRepo(db *gorm.DB, queries *queries.Queries) *UserRepo {
 	return &UserRepo{
 		DB: db,
+		Queries: queries,
 	}
 }
