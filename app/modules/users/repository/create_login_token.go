@@ -8,6 +8,7 @@ import (
 func (r UserRepo) CreateLoginToken(jwt *models.JwtResponse, UserID uint, tx *gorm.DB) (*models.JwtResponse, error) {
 	LoginToken := &models.LoginToken{
 		RefreshToken: jwt.RefreshToken,
+		UserID:       UserID,
 	}
 
 	createRefreshToken := tx.Table(models.LoginToken{}.TableName()).Create(LoginToken)
