@@ -1,0 +1,4 @@
+08:46:24 | 400 |   80.349102ms | 172.18.0.1 | POST | /api/v1/signup | -
+3073 400 - POST /api/v1/signup
+3157 400 - POST /api/v1/signup
+3361 400 - POST /api/v1/signup

@@ -1,8 +1,11 @@
 package server
 
 import (
+	"runtime"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/vkhoa145/facebook-mini-api/app/middleware"
 	"github.com/vkhoa145/facebook-mini-api/config"
 	db "github.com/vkhoa145/facebook-mini-api/db"
 	"gorm.io/gorm"
@@ -30,6 +33,13 @@ func (server *Server) Start() error {
 		AllowMethods:     "GET,POST,PUT,DELETE,PATCH,OPTIONS",
 	}))
 
+	server.app.Use(middleware.Logger())
 	SetupRoutes(server)
 	return server.app.Listen(":" + server.config.HTTP.Port)
+}
+
+func getMemoryUsage() float64 {
+	var memStats runtime.MemStats
+	runtime.ReadMemStats(&memStats)
+	return float64(memStats.Alloc) / 1024 / 1024 // Chuyển byte sang MB
 }

@@ -1,6 +1,7 @@
 package application
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/joho/godotenv"
@@ -9,7 +10,6 @@ import (
 )
 
 func StartApp() {
-	// err := godotenv.Load("/Users/vodangkhoa/Documents/Projects/facebook-mini-api/.env")
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -22,4 +22,10 @@ func StartApp() {
 	if error != nil {
 		log.Fatal("Error starting server: ", error)
 	}
+	defer func() {
+		if r := recover(); r != nil {
+			// Truyền thông điệp lỗi vào hàm defer
+			fmt.Println("Recovered from panic:", r)
+		}
+	}()
 }

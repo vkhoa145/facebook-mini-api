@@ -6,13 +6,12 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"time"
 
+	"github.com/vkhoa145/facebook-mini-api/app/middleware"
 	"github.com/vkhoa145/facebook-mini-api/app/models"
 	"github.com/vkhoa145/facebook-mini-api/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 func NewDb(cfg *config.Config) *gorm.DB {
@@ -29,7 +28,7 @@ func NewDb(cfg *config.Config) *gorm.DB {
 		cfg.DB.Timezone,
 	)
 
-	gormLogger := NewGormLogger()
+	gormLogger := middleware.NewGormLogger()
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: gormLogger,
 	})
@@ -60,7 +59,7 @@ func createDatabaseIfNotExists(cfg *config.Config) error {
 		cfg.DB.Timezone,
 	)
 
-	gormLogger := NewGormLogger()
+	gormLogger := middleware.NewGormLogger()
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: gormLogger,
 	})
@@ -133,19 +132,4 @@ func runMigration(db *gorm.DB) {
 			}
 		}
 	}
-}
-
-func NewGormLogger() logger.Interface {
-	gormLogger := logger.New(
-		log.New(os.Stdout, "\r\n", log.LstdFlags),
-		logger.Config{
-			SlowThreshold:             time.Millisecond,
-			LogLevel:                  logger.Info,
-			IgnoreRecordNotFoundError: true,
-			ParameterizedQueries:      true,
-			Colorful:                  true,
-		},
-	)
-
-	return gormLogger
 }
