@@ -5137,3 +5137,463 @@ Request started: POST /api/v1/signup at 2024-10-21T11:05:23Z, Current Memory: 2.
 
 2024/10/21 11:06:32 [32m/app/db/db_connect.go:113 [33mSLOW SQL >= 1µs
 [0m[31;1m[1.285ms] [33m[rows:1][35m SELECT COUNT(*) FROM schema_migrations WHERE version = '20240904_add_is_verified_to_users.sql'[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:72 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.891ms] [33m[rows:1][35m SELECT EXISTS(SELECT 1 FROM pg_database WHERE datname = 'facebook_mini')[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[20.886ms] [33m[rows:1][35m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND table_type = 'BASE TABLE'[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.310ms] [33m[rows:1][35m SELECT CURRENT_DATABASE()[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[35.221ms] [33m[rows:-][35m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = $1$ AND table_schema = CURRENT_SCHEMA() AND table_name = $2$[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.359ms] [33m[rows:-][35m SELECT * FROM "users" LIMIT $1$[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[24.343ms] [33m[rows:-][35m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$ AND constraint_type = $3$[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[14.940ms] [33m[rows:-][35m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.543ms] [33m[rows:-][35m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = $1$[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[6.322ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.978ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'created_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.725ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'updated_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[5.432ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'deleted_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.356ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'name') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.004ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'email') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.996ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'password') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.940ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'birthday') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.829ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'phone') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[9.103ms] [33m[rows:1][35m SELECT count(*) FROM pg_indexes WHERE tablename = 'users' AND indexname = 'idx_users_deleted_at' AND schemaname = CURRENT_SCHEMA()[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[2.483ms] [33m[rows:1][35m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND table_type = 'BASE TABLE'[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.313ms] [33m[rows:1][35m SELECT CURRENT_DATABASE()[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[9.553ms] [33m[rows:-][35m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = $1$ AND table_schema = CURRENT_SCHEMA() AND table_name = $2$[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[2.896ms] [33m[rows:-][35m SELECT * FROM "schema_migrations" LIMIT $1$[0m
+
+2024/10/21 11:08:33 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[13.181ms] [33m[rows:-][35m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$ AND constraint_type = $3$[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[14.605ms] [33m[rows:-][35m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.021ms] [33m[rows:-][35m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = $1$[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.329ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.460ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'created_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.145ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'updated_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.252ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'deleted_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.889ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'version') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[2.019ms] [33m[rows:1][35m SELECT count(*) FROM pg_indexes WHERE tablename = 'schema_migrations' AND indexname = 'idx_schema_migrations_deleted_at' AND schemaname = CURRENT_SCHEMA()[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[2.037ms] [33m[rows:1][35m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND table_type = 'BASE TABLE'[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.255ms] [33m[rows:1][35m SELECT CURRENT_DATABASE()[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[12.539ms] [33m[rows:-][35m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = $1$ AND table_schema = CURRENT_SCHEMA() AND table_name = $2$[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.116ms] [33m[rows:-][35m SELECT * FROM "login_tokens" LIMIT $1$[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[12.847ms] [33m[rows:-][35m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$ AND constraint_type = $3$[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[13.606ms] [33m[rows:-][35m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.367ms] [33m[rows:-][35m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = $1$[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.895ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.027ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'created_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.289ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'updated_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.164ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'deleted_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:34 [31;1m [35;1mERROR: could not create unique index "uni_login_tokens_user_id" (SQLSTATE 23505)
+[0m[33m[21.711ms] [34;1m[rows:0][0m ALTER TABLE "login_tokens" ADD CONSTRAINT "uni_login_tokens_user_id" UNIQUE ("user_id")
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:97 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.314ms] [33m[rows:0][35m CREATE TABLE IF NOT EXISTS schema_migrations (
+  version VARCHAR(255) PRIMARY KEY
+)[0m
+
+2024/10/21 11:08:34 [32m/app/db/db_connect.go:113 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.891ms] [33m[rows:1][35m SELECT COUNT(*) FROM schema_migrations WHERE version = '20240904_add_is_verified_to_users.sql'[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:72 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.542ms] [33m[rows:1][35m SELECT EXISTS(SELECT 1 FROM pg_database WHERE datname = 'facebook_mini')[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[26.082ms] [33m[rows:1][35m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND table_type = 'BASE TABLE'[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.985ms] [33m[rows:1][35m SELECT CURRENT_DATABASE()[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[39.988ms] [33m[rows:-][35m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = $1$ AND table_schema = CURRENT_SCHEMA() AND table_name = $2$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.733ms] [33m[rows:-][35m SELECT * FROM "users" LIMIT $1$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[24.041ms] [33m[rows:-][35m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$ AND constraint_type = $3$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[14.928ms] [33m[rows:-][35m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.565ms] [33m[rows:-][35m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = $1$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[6.449ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.223ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'created_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.998ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'updated_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.281ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'deleted_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.454ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'name') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.812ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'email') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.535ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'password') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.312ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'birthday') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.994ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'phone') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[8.855ms] [33m[rows:1][35m SELECT count(*) FROM pg_indexes WHERE tablename = 'users' AND indexname = 'idx_users_deleted_at' AND schemaname = CURRENT_SCHEMA()[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[2.427ms] [33m[rows:1][35m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND table_type = 'BASE TABLE'[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.514ms] [33m[rows:1][35m SELECT CURRENT_DATABASE()[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[9.561ms] [33m[rows:-][35m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = $1$ AND table_schema = CURRENT_SCHEMA() AND table_name = $2$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.653ms] [33m[rows:-][35m SELECT * FROM "schema_migrations" LIMIT $1$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[13.214ms] [33m[rows:-][35m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$ AND constraint_type = $3$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[11.744ms] [33m[rows:-][35m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.612ms] [33m[rows:-][35m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = $1$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[2.468ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.397ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'created_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.914ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'updated_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.342ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'deleted_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.813ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'version') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.342ms] [33m[rows:1][35m SELECT count(*) FROM pg_indexes WHERE tablename = 'schema_migrations' AND indexname = 'idx_schema_migrations_deleted_at' AND schemaname = CURRENT_SCHEMA()[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.450ms] [33m[rows:1][35m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND table_type = 'BASE TABLE'[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.332ms] [33m[rows:1][35m SELECT CURRENT_DATABASE()[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[10.035ms] [33m[rows:-][35m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = $1$ AND table_schema = CURRENT_SCHEMA() AND table_name = $2$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[2.646ms] [33m[rows:-][35m SELECT * FROM "login_tokens" LIMIT $1$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[13.685ms] [33m[rows:-][35m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$ AND constraint_type = $3$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[13.226ms] [33m[rows:-][35m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.945ms] [33m[rows:-][35m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = $1$[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.753ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.141ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'created_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.247ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'updated_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.310ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'deleted_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:08:55 [31;1m [35;1mERROR: could not create unique index "uni_login_tokens_user_id" (SQLSTATE 23505)
+[0m[33m[19.579ms] [34;1m[rows:0][0m ALTER TABLE "login_tokens" ADD CONSTRAINT "uni_login_tokens_user_id" UNIQUE ("user_id")
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:97 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.374ms] [33m[rows:0][35m CREATE TABLE IF NOT EXISTS schema_migrations (
+  version VARCHAR(255) PRIMARY KEY
+)[0m
+
+2024/10/21 11:08:55 [32m/app/db/db_connect.go:113 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.535ms] [33m[rows:1][35m SELECT COUNT(*) FROM schema_migrations WHERE version = '20240904_add_is_verified_to_users.sql'[0m
+Request started: POST /api/v1/signup at 2024-10-21T11:09:02Z, Current Memory: 2.45 MB
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:72 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.802ms] [33m[rows:1][35m SELECT EXISTS(SELECT 1 FROM pg_database WHERE datname = 'facebook_mini')[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[18.860ms] [33m[rows:1][35m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND table_type = 'BASE TABLE'[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.848ms] [33m[rows:1][35m SELECT CURRENT_DATABASE()[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[33.523ms] [33m[rows:-][35m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = $1$ AND table_schema = CURRENT_SCHEMA() AND table_name = $2$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.988ms] [33m[rows:-][35m SELECT * FROM "users" LIMIT $1$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[22.124ms] [33m[rows:-][35m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$ AND constraint_type = $3$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[16.651ms] [33m[rows:-][35m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.445ms] [33m[rows:-][35m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = $1$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.899ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.691ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'created_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.204ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'updated_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.059ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'deleted_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.414ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'name') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[4.177ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'email') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.991ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'password') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.147ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'birthday') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.695ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'phone') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[9.155ms] [33m[rows:1][35m SELECT count(*) FROM pg_indexes WHERE tablename = 'users' AND indexname = 'idx_users_deleted_at' AND schemaname = CURRENT_SCHEMA()[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.334ms] [33m[rows:1][35m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND table_type = 'BASE TABLE'[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.210ms] [33m[rows:1][35m SELECT CURRENT_DATABASE()[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[8.637ms] [33m[rows:-][35m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = $1$ AND table_schema = CURRENT_SCHEMA() AND table_name = $2$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[2.791ms] [33m[rows:-][35m SELECT * FROM "schema_migrations" LIMIT $1$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[12.883ms] [33m[rows:-][35m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$ AND constraint_type = $3$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[13.338ms] [33m[rows:-][35m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.936ms] [33m[rows:-][35m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = $1$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.993ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.070ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'created_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.315ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'updated_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.138ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'deleted_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.012ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'schema_migrations' AND column_name = 'version') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'schema_migrations' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.451ms] [33m[rows:1][35m SELECT count(*) FROM pg_indexes WHERE tablename = 'schema_migrations' AND indexname = 'idx_schema_migrations_deleted_at' AND schemaname = CURRENT_SCHEMA()[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.786ms] [33m[rows:1][35m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND table_type = 'BASE TABLE'[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[0.291ms] [33m[rows:1][35m SELECT CURRENT_DATABASE()[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[8.787ms] [33m[rows:-][35m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = $1$ AND table_schema = CURRENT_SCHEMA() AND table_name = $2$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[2.827ms] [33m[rows:-][35m SELECT * FROM "login_tokens" LIMIT $1$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[14.695ms] [33m[rows:-][35m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$ AND constraint_type = $3$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[15.623ms] [33m[rows:-][35m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = $1$ AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = $2$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.360ms] [33m[rows:-][35m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = $1$[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.807ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.716ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'created_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.254ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'updated_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:36 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.504ms] [33m[rows:0][35m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'login_tokens' AND column_name = 'deleted_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'login_tokens' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))[0m
+
+2024/10/21 11:10:28 [31;1m [35;1mERROR: could not create unique index "uni_login_tokens_user_id" (SQLSTATE 23505)
+[0m[33m[26.686ms] [34;1m[rows:0][0m ALTER TABLE "login_tokens" ADD CONSTRAINT "uni_login_tokens_user_id" UNIQUE ("user_id")
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:97 [33mSLOW SQL >= 1µs
+[0m[31;1m[1.049ms] [33m[rows:0][35m CREATE TABLE IF NOT EXISTS schema_migrations (
+  version VARCHAR(255) PRIMARY KEY
+)[0m
+
+2024/10/21 11:10:28 [32m/app/db/db_connect.go:113 [33mSLOW SQL >= 1µs
+[0m[31;1m[3.109ms] [33m[rows:1][35m SELECT COUNT(*) FROM schema_migrations WHERE version = '20240904_add_is_verified_to_users.sql'[0m
+Request started: POST /api/v1/signup at 2024-10-21T11:10:32Z, Current Memory: 2.45 MB
+Request ended: POST /api/v1/signup at 2024-10-21T11:10:32Z, Duration: 385.872µs, Memory usage: 2.45 MB, Memory diff: 0.00 MB
+
+
+
+
+
+
+
+
+Request started: POST /api/v1/signup at 2024-10-21T11:11:04Z, Current Memory: 2.46 MB
+Request ended: POST /api/v1/signup at 2024-10-21T11:11:04Z, Duration: 200.041µs, Memory usage: 2.46 MB, Memory diff: 0.00 MB

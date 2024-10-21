@@ -9,7 +9,7 @@ import (
 func (h *UserHandler) Login() fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 		payload := models.SignUpInput{}
-
+		panic("Error of panice")
 		if err := ctx.BodyParser(&payload); err != nil {
 			return utils.DataResponseResult(nil, err.Error(), 400, ctx)
 		}

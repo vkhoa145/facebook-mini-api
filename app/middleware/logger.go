@@ -18,6 +18,18 @@ func Logger() fiber.Handler {
 	}
 
 	return func(c *fiber.Ctx) error {
+		defer func() {
+			if r := recover(); r != nil {
+				fmt.Println("Recovered from panic:", r)
+				startTime := time.Now()
+				startMemory := getMemoryUsage()
+				endMemory := getMemoryUsage()
+				logResponse(file, c, startTime, endMemory, startMemory)
+				// Gửi một phản hồi lỗi cho client
+				c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
+			}
+		}()
+
 		startTime := time.Now()
 		startMemory := getMemoryUsage()
 
