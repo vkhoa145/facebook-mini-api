@@ -1,18 +1,18 @@
 package models
 
-import (
-	"gorm.io/gorm"
-)
+import "time"
 
 const TableNameUsers = "users"
 
 type User struct {
-	gorm.Model
-	Name       string     `gorm:"type:varchar(255)" json:"name" validate:"required,min=3,max=255"`
-	Email      string     `gorm:"unique;type:varchar(255);not null" json:"email" validate:"required,email,min=5,max=255"`
-	Password   string     `gorm:"type:varchar(255);not null" json:"password" validate:"required"`
-	Birthday   string     `gorm:"type:varchar(255);not null" json:birthday`
-	Phone      string     `gorm:"type:varchar(255)" json:phone`
+	ID         uint       `gorm:"column:id;primaryKey;unique"`
+	Name       string     `gorm:"column:name;type:varchar(255)" json:"name" validate:"required,min=3,max=255"`
+	Email      string     `gorm:"column:email;unique;type:varchar(255);not null" json:"email" validate:"required,email,min=5,max=255"`
+	Password   string     `gorm:"column:password;type:varchar(255);not null" json:"password" validate:"required"`
+	Birthday   string     `gorm:"column:birthday;type:varchar(255);not null" json:birthday`
+	Phone      string     `gorm:"column:phone;type:varchar(255)" json:phone`
+	CreatedAt  time.Time  `gorm:"column:created_at"`
+	UpdatedAt  time.Time  `gorm:column:updated_at`
 	LoginToken LoginToken `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
 }
 

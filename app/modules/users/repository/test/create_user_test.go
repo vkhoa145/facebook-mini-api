@@ -101,7 +101,7 @@ func TestCreateUser(t *testing.T) {
 			args: args{
 				user: &models.User{
 					Name:      "Khoa",
-					Email:     "khoa123@gmail.com",
+					Email:     "",
 					Password:  "12345678",
 					Birthday:  "10/12/1991",
 					Phone:     "12345678",
@@ -115,9 +115,9 @@ func TestCreateUser(t *testing.T) {
 				mockSql.MatchExpectationsInOrder(true)
 				mockSql.ExpectQuery(regexp.QuoteMeta(
 					`INSERT INTO "users" ("name","email","password","birthday","phone","created_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7)`,
-				)).WithArgs("Khoa", "khoa123@gmail.com", "12345678", "10/12/1991", "12345678", mockedTime, mockedTime).WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(1))
+				)).WithArgs("Khoa", "", "12345678", "10/12/1991", "12345678", mockedTime, mockedTime).WillReturnError(errors.New("new row for relation \"users\" violates check constraint \"email_not_empty\""))
 
-				mockSql.ExpectCommit()
+				mockSql.ExpectRollback()
 			},
 			want:    nil,
 			wantErr: true,
@@ -130,16 +130,31 @@ func TestCreateUser(t *testing.T) {
 				tt.beforeTest(mockSQL)
 			}
 
-			got, err := u.CreateUser(tt.args.user, tt.args.tx.Begin())
-			t.Logf("UserRepo.Create() got1111 = %v\n", got)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("UserRepo.Create() got = %v\n", got)
-				t.Errorf("UserRepo.Create() error = %v\n, wantErr: %v\n", err, tt.wantErr)
-				return
-			}
+			u.DB.Transaction(func(tx *gorm.DB) error {
+				got, err := u.CreateUser(tt.args.user, tx)
+				t.Logf("UserRepo.Create() got = %v, err: %v", got, err)
 
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("UserRepo.Create() = %v, want %v", got, tt.want)
+				if (err != nil) != tt.wantErr {
+					t.Errorf("UserRepo.Create() error = %v, wantErr %v", err, tt.wantErr)
+					return err
+				}
+
+				if !reflect.DeepEqual(got, tt.want) {
+					t.Errorf("UserRepo.Create() = %v, want %v", got, tt.want)
+					return errors.New("mismatch")
+				}
+
+				if err != nil {
+					return err
+				}
+
+				return nil
+			})
+
+			if err := mockSQL.ExpectationsWereMet(); err != nil {
+				t.Errorf("there were unfulfilled expectations: %s", err)
+			} else {
+				t.Logf("Fullfilled Expectations")
 			}
 		})
 	}
