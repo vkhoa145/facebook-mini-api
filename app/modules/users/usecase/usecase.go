@@ -11,13 +11,13 @@ type UserUseCaseInterface interface {
 }
 
 type UserUseCase struct {
-	userRepo repo.UserRepoInterface
-	tx       transaction.TransactionManager
+	UserRepo repo.UserRepoInterface
+	Tx       transaction.TransactionManager
 }
 
 func NewUserUseCase(userRepo repo.UserRepoInterface, tx transaction.TransactionManager) UserUseCaseInterface {
 	return &UserUseCase{
-		userRepo: userRepo,
-		tx:       tx,
+		UserRepo: userRepo,
+		Tx:       tx,
 	}
 }

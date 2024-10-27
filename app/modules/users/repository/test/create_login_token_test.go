@@ -1,8 +1,10 @@
 package repository_test
 
 import (
+	"errors"
 	"regexp"
 	"testing"
+	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/vkhoa145/facebook-mini-api/app/models"
@@ -14,12 +16,11 @@ import (
 
 func TestCreateLogin(t *testing.T) {
 	type args struct {
-		jwt    *models.JwtResponse
-		UserID uint
-		tx     *transaction.TransactionManager
+		loginToken *models.LoginToken
+		tx         *transaction.TransactionManager
 	}
 
-	// mockedTime := time.Now()
+	mockedTime := time.Now()
 	mockDB, mockSQL, _ := sqlmock.New()
 	defer mockDB.Close()
 
@@ -40,27 +41,71 @@ func TestCreateLogin(t *testing.T) {
 		name       string
 		args       args
 		beforeTest func(sqlmock.Sqlmock)
-		want       *models.JwtResponse
+		want       *models.LoginToken
 		wantErr    bool
 	}{
 		{
 			name: "success create login token",
 			args: args{
-				jwt: &models.JwtResponse{
-					RefreshToken: "akjdkfjaskdjf",
+				loginToken: &models.LoginToken{
+					RefreshToken: "20aafe8e63f0bfe1d69f5bf131d4173c",
+					UserID:       1,
+					UpdatedAt:    mockedTime,
+					CreatedAt:    mockedTime,
 				},
-				UserID: 1,
-				tx:     transaction,
+				tx: transaction,
 			},
 			beforeTest: func(mockSql sqlmock.Sqlmock) {
 				mockSql.ExpectBegin()
 				mockSql.MatchExpectationsInOrder(true)
 				mockSql.ExpectQuery(regexp.QuoteMeta(
-					`INSERT INTO "login_tokens" ("user_id","refresh_token") VALUES ($1$,$2$)`,
-				)).WithArgs(1, "asdfasdf").WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(1))
+					`INSERT INTO "login_tokens" ("user_id","refresh_token","created_at","updated_at") VALUES ($1,$2,$3,$4)`,
+				)).WithArgs(1, "20aafe8e63f0bfe1d69f5bf131d4173c", mockedTime, mockedTime).WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(1))
 				mockSql.ExpectCommit()
 			},
-			want: &models.JwtResponse{RefreshToken: "akjdkfjaskdjf", AccessToken: "adsfasdfsf"},
+			want: &models.LoginToken{UserID: 1, RefreshToken: "20aafe8e63f0bfe1d69f5bf131d4173c", CreatedAt: mockedTime, UpdatedAt: mockedTime},
+		},
+		{
+			name: "duplicate user id",
+			args: args{
+				loginToken: &models.LoginToken{
+					RefreshToken: "20aafe8e63f0bfe1d69f5bf131d4173c",
+					UserID:       1,
+					UpdatedAt:    mockedTime,
+					CreatedAt:    mockedTime,
+				},
+				tx: transaction,
+			},
+			beforeTest: func(mockSql sqlmock.Sqlmock) {
+				mockSql.ExpectBegin()
+				mockSql.MatchExpectationsInOrder(true)
+				mockSql.ExpectQuery(regexp.QuoteMeta(
+					`INSERT INTO "login_tokens" ("user_id","refresh_token","created_at","updated_at") VALUES ($1,$2,$3,$4)`,
+				)).WithArgs(1, "20aafe8e63f0bfe1d69f5bf131d4173c", mockedTime, mockedTime).WillReturnError(errors.New("duplicate key value violates unique constraint \"uni_login_tokens_user_id\""))
+			},
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			name: "empty refresh token",
+			args: args{
+				loginToken: &models.LoginToken{
+					RefreshToken: "20aafe8e63f0bfe1d69f5bf131d4173c",
+					UserID:       1,
+					UpdatedAt:    mockedTime,
+					CreatedAt:    mockedTime,
+				},
+				tx: transaction,
+			},
+			beforeTest: func(mockSql sqlmock.Sqlmock) {
+				mockSql.ExpectBegin()
+				mockSql.MatchExpectationsInOrder(true)
+				mockSql.ExpectQuery(regexp.QuoteMeta(
+					`INSERT INTO "login_tokens" ("user_id","refresh_token","created_at","updated_at") VALUES ($1,$2,$3,$4)`,
+				)).WithArgs(1, "20aafe8e63f0bfe1d69f5bf131d4173c", mockedTime, mockedTime).WillReturnError(errors.New("new row for relation \"login_tokens\" violates check constraint \"refresh_token_not_empty\""))
+			},
+			want:    nil,
+			wantErr: true,
 		},
 	}
 
@@ -71,7 +116,7 @@ func TestCreateLogin(t *testing.T) {
 			}
 
 			u.DB.Transaction(func(tx *gorm.DB) error {
-				got, err := u.CreateLoginToken(tt.args.jwt, tt.args.UserID, tx)
+				got, err := u.CreateLoginToken(tt.args.loginToken, tx)
 				t.Logf("CreateLoginTokengot = %v, err: %v", got, err)
 
 				if (err != nil) != tt.wantErr {

@@ -9,7 +9,7 @@ import (
 type UserRepoInterface interface {
 	CheckExistedEmail(email string) bool
 	CreateUser(payload *models.User, tx *gorm.DB) (*models.User, error)
-	CreateLoginToken(jwt *models.JwtResponse, UserID uint, tx *gorm.DB) (*models.JwtResponse, error)
+	CreateLoginToken(jwt *models.LoginToken, tx *gorm.DB) (*models.LoginToken, error)
 }
 
 type UserRepo struct {
@@ -19,7 +19,7 @@ type UserRepo struct {
 
 func NewUserRepo(db *gorm.DB, queries *queries.Queries) *UserRepo {
 	return &UserRepo{
-		DB: db,
+		DB:      db,
 		Queries: queries,
 	}
 }
