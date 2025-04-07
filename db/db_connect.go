@@ -37,6 +37,7 @@ func NewDb(cfg *config.Config) *gorm.DB {
 		&models.User{},
 		&models.SchemaMigration{},
 		&models.LoginToken{},
+		&models.VerificationCode{},
 	)
 
 	initSchemaMigration(db)

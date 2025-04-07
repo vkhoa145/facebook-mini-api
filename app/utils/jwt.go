@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -43,6 +44,28 @@ func GenerateAccessToken(user *models.User) (string, error) {
 	}
 
 	return signedToken, nil
+}
+
+func IsValidJwtToken(tokenString string) (*models.Claims, error) {
+	secretKey := []byte(os.Getenv("JWT_SECRET_KEY"))
+	claims := &models.Claims{}
+
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", t.Header["alg"])
+		}
+		return secretKey, nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !token.Valid {
+		return nil, fmt.Errorf("Invalid token")
+	}
+
+	return claims, nil
 }
 
 func GenerateRefreshToken() (string, error) {

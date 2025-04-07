@@ -3,6 +3,8 @@ package utils
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"fmt"
+	"math/big"
 )
 
 func GenerateRandomString(length int) (string, error) {
@@ -12,4 +14,9 @@ func GenerateRandomString(length int) (string, error) {
 	}
 
 	return hex.EncodeToString(bytes), nil
+}
+
+func GenerateVerifyCode() string {
+	num, _ := rand.Int(rand.Reader, big.NewInt(1000000))
+	return fmt.Sprintf("%06d", num.Int64())
 }

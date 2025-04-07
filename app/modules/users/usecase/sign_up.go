@@ -2,12 +2,19 @@ package usecase
 
 import (
 	"errors"
+	"time"
 
 	"github.com/vkhoa145/facebook-mini-api/app/models"
 	"github.com/vkhoa145/facebook-mini-api/app/utils"
 )
 
-func (u UserUseCase) SignUp(user *models.User) (*models.UserResponse, error) {
+type Result struct {
+	CreateUserResponse *models.UserResponse
+	VerifyCode         *models.VerificationCode
+	ErrorResponse      error
+}
+
+func (u UserUseCase) SignUp(user *models.User) (*Result, error) {
 	email := user.Email
 	existingEmail := u.UserRepo.CheckExistedEmail(email)
 	if existingEmail {
@@ -27,7 +34,8 @@ func (u UserUseCase) SignUp(user *models.User) (*models.UserResponse, error) {
 	}
 
 	loginToken := &models.LoginToken{
-		UserID: createdUser.ID,
+		UserID:       createdUser.ID,
+		RefreshToken: jwt.RefreshToken,
 	}
 
 	_, errLoginToken := u.UserRepo.CreateLoginToken(loginToken, tx)
@@ -36,9 +44,27 @@ func (u UserUseCase) SignUp(user *models.User) (*models.UserResponse, error) {
 		return nil, errLoginToken
 	}
 
+	verifycationCode := &models.VerificationCode{
+		UserID:           createdUser.ID,
+		VerifycationType: "email",
+		Code:             utils.GenerateVerifyCode(),
+		ExpiredAt:        time.Now().Add(15 * time.Minute),
+	}
+
+	_, errVerifyCode := u.UserRepo.CreateVerificationCode(verifycationCode, tx)
+	if errVerifyCode != nil {
+		tx.Rollback()
+		return nil, errVerifyCode
+	}
+
 	tx.Commit()
+
 	userResponse := makeUserResponse(createdUser, jwt.AccessToken, jwt.RefreshToken)
-	return userResponse, nil
+	result := &Result{
+		CreateUserResponse: userResponse,
+		VerifyCode:         verifycationCode,
+	}
+	return result, nil
 }
 
 func makeUserResponse(user *models.User, accessToken string, refreshToken string) *models.UserResponse {

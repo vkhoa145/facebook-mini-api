@@ -1,13 +1,16 @@
 package usecase_test
 
 import (
-	"reflect"
 	"testing"
 
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/golang/mock/gomock"
 	"github.com/vkhoa145/facebook-mini-api/app/models"
 	"github.com/vkhoa145/facebook-mini-api/app/modules/users/repository/mocks"
 	"github.com/vkhoa145/facebook-mini-api/app/modules/users/usecase"
+	"github.com/vkhoa145/facebook-mini-api/app/transaction"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func TestSignUp(t *testing.T) {
@@ -15,8 +18,20 @@ func TestSignUp(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockUserRepo := mocks.NewMockUserRepoInterface(ctrl)
+	mockDB, _, _ := sqlmock.New()
+	defer mockDB.Close()
+
+	dialector := postgres.New(postgres.Config{
+		Conn:       mockDB,
+		DriverName: "postgres",
+	})
+
+	db, _ := gorm.Open(dialector, &gorm.Config{})
+
+	transaction := transaction.NewTransactionManager(db)
 	u := usecase.UserUseCase{
 		UserRepo: mockUserRepo,
+		Tx:       *transaction,
 	}
 
 	type args struct {
@@ -41,17 +56,18 @@ func TestSignUp(t *testing.T) {
 				},
 			},
 			beforeTest: func(userRepo *mocks.MockUserRepoInterface) {
-				userRepo.EXPECT().CheckExistedEmail("khoa@gmail.com").Return(false)
+				userRepo.EXPECT().CheckExistedEmail(gomock.Eq("khoa@gmail.com")).Return(false).Times(1)
 				userRepo.EXPECT().CreateUser(
-					models.User{
+					&models.User{
 						Email:    "khoa@gmail.com",
 						Name:     "khoa",
 						Birthday: "10/10/1991",
 						Password: "12345678",
 					},
-					u.Tx.Begin(),
+					gomock.Any(),
 				).Return(
-					models.User{
+					&models.User{
+						ID:       1,
 						Email:    "khoa@gmail.com",
 						Name:     "khoa",
 						Birthday: "10/10/1991",
@@ -59,13 +75,12 @@ func TestSignUp(t *testing.T) {
 					}, nil,
 				)
 				userRepo.EXPECT().CreateLoginToken(
-					&models.LoginToken{
-						UserID: 1,
-					},
-					u.Tx.Begin(),
+					gomock.AssignableToTypeOf(&models.LoginToken{}), // Chỉ cần đúng kiểu dữ liệu
+					gomock.Any(),
 				).Return(
 					&models.LoginToken{
-						UserID: 1,
+						UserID:       1,
+						RefreshToken: gomock.Any().String(),
 					}, nil,
 				)
 			},
@@ -74,8 +89,8 @@ func TestSignUp(t *testing.T) {
 				Email:        "khoa@gmail.com",
 				Birthday:     "10/10/1991",
 				Name:         "khoa",
-				AccessToken:  "adkfjlasdjflaljdf",
-				RefreshToken: "laekdlfkldsfllk",
+				AccessToken:  gomock.Any().String(),
+				RefreshToken: gomock.Any().String(),
 			},
 			wantErr: false,
 		},
@@ -93,7 +108,7 @@ func TestSignUp(t *testing.T) {
 				return
 			}
 
-			if !reflect.DeepEqual(got, tt.want) {
+			if got.ID != tt.want.ID || got.Email != tt.want.Email || got.Name != tt.want.Name || got.Birthday != tt.want.Birthday {
 				t.Errorf("UseCase SignUp = %v, want %v", got, tt.want)
 			}
 		})

@@ -28,12 +28,13 @@ func NewServer(fiber *fiber.App, cfg *config.Config) *Server {
 func (server *Server) Start() error {
 	server.app.Use(cors.New(cors.Config{
 		AllowHeaders:     "Origin,Content-Type,Accept,Content-Length,Accept-Language,Accept-Encoding,Connection,Access-Control-Allow-Origin",
-		AllowOrigins:     "*",
-		AllowCredentials: false,
+		AllowOrigins:     "http://localhost:3000",
+		AllowCredentials: true,
 		AllowMethods:     "GET,POST,PUT,DELETE,PATCH,OPTIONS",
 	}))
 
 	server.app.Use(middleware.Logger())
+	server.app.Use([]string{"/api/v1/posts"}, middleware.Authenticate())
 	SetupRoutes(server)
 	return server.app.Listen(":" + server.config.HTTP.Port)
 }

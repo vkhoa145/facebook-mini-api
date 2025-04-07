@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"strconv"
+	"time"
 )
 
 func ModifyBirthday(BirthDay int, BirthMonth int, BirthYear int) string {
@@ -64,4 +65,8 @@ func getLastDayOfMonth(month int64) int {
 	}
 
 	return lastDayOfMonth
+}
+
+func FormatDateTime(datetime time.Time) string {
+	return datetime.Format("2006-01-02 15:04")
 }

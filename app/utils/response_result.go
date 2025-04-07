@@ -6,3 +6,5 @@ func DataResponseResult(result interface{}, failure interface{}, status int, ctx
 	ctx.Status(status)
 	return ctx.JSON(&fiber.Map{"status": status, "result": result, "error": failure})
 }
+
+

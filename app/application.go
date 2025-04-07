@@ -22,6 +22,7 @@ func StartApp() {
 	if error != nil {
 		log.Fatal("Error starting server: ", error)
 	}
+	
 	defer func() {
 		if r := recover(); r != nil {
 			// Truyền thông điệp lỗi vào hàm defer

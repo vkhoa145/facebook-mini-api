@@ -7,7 +7,7 @@ import (
 )
 
 type UserUseCaseInterface interface {
-	SignUp(payload *models.User) (*models.UserResponse, error)
+	SignUp(payload *models.User) (*Result, error)
 }
 
 type UserUseCase struct {

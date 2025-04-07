@@ -10,6 +10,7 @@ type UserRepoInterface interface {
 	CheckExistedEmail(email string) bool
 	CreateUser(payload *models.User, tx *gorm.DB) (*models.User, error)
 	CreateLoginToken(jwt *models.LoginToken, tx *gorm.DB) (*models.LoginToken, error)
+	CreateVerificationCode(verificationCode *models.VerificationCode, tx *gorm.DB) (*models.VerificationCode, error)
 }
 
 type UserRepo struct {
